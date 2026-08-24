@@ -1,0 +1,22 @@
+{
+  "name": "minecraftgg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1",
+    "hpagent": "^1.2.0",
+    "minecraft-data": "^3.113.2",
+    "mineflayer": "^4.37.1",
+    "prismarine-viewer": "^1.33.0",
+    "socket.io": "^4.8.3",
+    "socks": "^2.8.9"
+  }
+}

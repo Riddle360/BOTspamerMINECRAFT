@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control de Bots Minecraft</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans select-none">
+
+    <header class="bg-slate-900 border-b border-slate-800 py-3 px-6 shadow-md flex justify-between items-center">
+        <h1 class="text-base font-bold text-indigo-400 tracking-wide uppercase">
+            Control de Bots Minecraft
+        </h1>
+        <div id="status-indicator" class="text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>Sistema Listo</span>
+        </div>
+    </header>
+
+    <nav class="bg-slate-900/50 border-b border-slate-800 px-6 flex gap-2">
+        <button onclick="switchTab('tab-start')" id="btn-tab-start" class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-indigo-500 text-indigo-400 transition">Inicio / Conexiones</button>
+        <button onclick="switchTab('tab-chat')" id="btn-tab-chat" class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">Chat y Spam</button>
+        <button onclick="switchTab('tab-proxies')" id="btn-tab-proxies" class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">Gestor de Proxies</button>
+        <button onclick="switchTab('tab-movement')" id="btn-tab-movement" class="tab-btn px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">Movimiento</button>
+    </nav>
+
+    <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
+        
+        <section id="tab-start" class="tab-content grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="space-y-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+                    <h2 class="text-sm font-semibold text-slate-200 border-b border-slate-800 pb-2">Servidor</h2>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-medium text-slate-400 mb-1">IP</label>
+                            <input type="text" id="host" value="localhost" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Puerto</label>
+                            <input type="number" id="port" value="25565" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Versión</label>
+                        <select id="version" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                            <option value="26.2">26.2</option>
+                            <option value="26.1.2">26.1.2</option>
+                            <option value="26.1">26.1</option>
+                            <option value="1.21.11">1.21.11</option>
+                            <option value="1.21.4">1.21.4</option>
+                            <option value="1.21.1">1.21.1</option>
+                            <option value="1.21">1.21</option>
+                            <option value="1.20.6">1.20.6</option>
+                            <option value="1.20.4">1.20.4</option>
+                            <option value="1.20.2">1.20.2</option>
+                            <option value="1.20.1" selected>1.20.1</option>
+                            <option value="1.20">1.20</option>
+                            <option value="1.19.4">1.19.4</option>
+                            <option value="1.19.3">1.19.3</option>
+                            <option value="1.19.2">1.19.2</option>
+                            <option value="1.19.1">1.19.1</option>
+                            <option value="1.19">1.19</option>
+                            <option value="1.18.2">1.18.2</option>
+                            <option value="1.18.1">1.18.1</option>
+                            <option value="1.18">1.18</option>
+                            <option value="1.17.1">1.17.1</option>
+                            <option value="1.17">1.17</option>
+                            <option value="1.16.5">1.16.5</option>
+                            <option value="1.16.4">1.16.4</option>
+                            <option value="1.16.3">1.16.3</option>
+                            <option value="1.16.2">1.16.2</option>
+                            <option value="1.16.1">1.16.1</option>
+                            <option value="1.16">1.16</option>
+                            <option value="1.15.2">1.15.2</option>
+                            <option value="1.15.1">1.15.1</option>
+                            <option value="1.15">1.15</option>
+                            <option value="1.14.4">1.14.4</option>
+                            <option value="1.14.3">1.14.3</option>
+                            <option value="1.14.2">1.14.2</option>
+                            <option value="1.14.1">1.14.1</option>
+                            <option value="1.14">1.14</option>
+                            <option value="1.13.2">1.13.2</option>
+                            <option value="1.13.1">1.13.1</option>
+                            <option value="1.13">1.13</option>
+                            <option value="1.12.2">1.12.2</option>
+                            <option value="1.12.1">1.12.1</option>
+                            <option value="1.12">1.12</option>
+                            <option value="1.8.9">1.8.9</option>
+                            <option value="1.8">1.8</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg space-y-3">
+                    <h2 class="text-sm font-semibold text-slate-200 border-b border-slate-800 pb-2">Bots</h2>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Cantidad</label>
+                            <input type="number" id="count" value="5" min="1" max="500" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Prefijo (Opcional)</label>
+                            <input type="text" id="prefix" value="" placeholder="Nombres aleatorios" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Delay (ms)</label>
+                            <input type="number" id="delay" value="3000" step="500" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña Bot</label>
+                            <input type="text" id="botPassword" value="Pass1234" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1.5 pt-1">
+                        <div class="flex items-center gap-2">
+                            <!-- Proxies ACTIVADO de fábrica -->
+                            <input type="checkbox" id="useProxies" class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-0" checked>
+                            <label for="useProxies" class="text-xs text-slate-300 cursor-pointer">Usar lista de proxies (SOCKS5)</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <!-- Auto-Cracked DESACTIVADO de fábrica -->
+                            <input type="checkbox" id="autoCracked" class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-0">
+                            <label for="autoCracked" class="text-xs text-slate-300 cursor-pointer">Enviar /cracked prioritario</label>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 grid grid-cols-3 gap-2">
+                        <button onclick="startBots()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Iniciar</button>
+                        <button onclick="stopSpawning()" class="bg-amber-600 hover:bg-amber-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Pausar</button>
+                        <button onclick="stopBots()" class="bg-rose-600 hover:bg-rose-500 text-white font-medium py-1.5 rounded-lg text-xs transition">Desconectar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex flex-col h-[480px]">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
+                    <h2 class="text-sm font-semibold text-slate-200">Logger de Conexiones y Sistema</h2>
+                    <button onclick="clearSystemConsole()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs px-2.5 py-1 rounded-md transition font-medium">
+                        Limpiar Logs
+                    </button>
+                </div>
+                <div id="system-console" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs overflow-y-auto space-y-1 text-slate-300 select-text">
+                    <div class="text-slate-600">[SISTEMA] Conexiones, expulsiones y errores aparecerán aquí...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-chat" class="tab-content hidden grid grid-cols-1 gap-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg flex flex-col h-[380px]">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
+                    <h2 class="text-md font-semibold text-slate-200">Chat en Vivo del Servidor</h2>
+                    <button onclick="clearChatConsole()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs px-2.5 py-1 rounded-md transition font-medium">
+                        Limpiar Chat
+                    </button>
+                </div>
+                <div id="chat-console" class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs overflow-y-auto space-y-1 text-slate-300 select-text">
+                    <div class="text-slate-600">[CHAT] Exclusivo para mensajes recibidos y enviados al servidor...</div>
+                </div>
+                <div class="mt-3 flex gap-2">
+                    <input type="text" id="globalMsg" placeholder="Enviar mensaje o comando (/login, /register, etc.)..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500" onkeydown="if(event.key==='Enter') sendGlobalMsg()">
+                    <button onclick="sendGlobalMsg()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-sm transition font-medium">Enviar</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <h2 class="text-md font-semibold text-slate-200 border-b border-slate-800 pb-2 mb-3">Módulo de Spam Masivo</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Mensaje de Spam</label>
+                        <input type="text" id="spamMessageInput" placeholder="Mensaje para enviar repetidamente..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Intervalo (ms)</label>
+                        <input type="number" id="spamDelayInput" value="3000" step="500" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="startSpam()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">Iniciar Spam</button>
+                    <button onclick="stopSpam()" class="bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-sm transition">Detener Spam</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-proxies" class="tab-content hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <h2 class="text-md font-semibold text-slate-200">Editor de Lista de Proxies</h2>
+                    <span class="text-xs text-slate-400">Formato: ip:puerto (SOCKS5)</span>
+                </div>
+                <textarea id="proxyArea" rows="12" placeholder="127.0.0.1:1080&#10;192.168.1.1:1080" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs text-slate-200 focus:outline-none focus:border-indigo-500"></textarea>
+                <div class="flex justify-end gap-3">
+                    <button onclick="saveProxies()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">Guardar Lista</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-movement" class="tab-content hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+                <h2 class="text-md font-semibold text-slate-200 border-b border-slate-800 pb-2">Acciones Físicas de Bots</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="sendAction('jump')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-lg text-sm transition">Saltar</button>
+                    <button onclick="sendAction('forward')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-lg text-sm transition">Avanzar 1s</button>
+                    <button onclick="sendAction('stop')" class="bg-rose-950 border border-rose-800 text-rose-300 py-2 rounded-lg text-sm transition">Parar Todo</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const socket = io();
+        const systemConsole = document.getElementById('system-console');
+        const chatConsole = document.getElementById('chat-console');
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('border-indigo-500', 'text-indigo-400');
+                el.classList.add('border-transparent', 'text-slate-400');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.remove('border-transparent', 'text-slate-400');
+            activeBtn.classList.add('border-indigo-500', 'text-indigo-400');
+        }
+
+        socket.on('system-log', (data) => {
+            const entry = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span class="text-slate-600">[${time}]</span> <span class="text-indigo-400 font-semibold">[SISTEMA]</span> ${data.text}`;
+            systemConsole.appendChild(entry);
+            systemConsole.scrollTop = systemConsole.scrollHeight;
+        });
+
+        socket.on('chat-log', (data) => {
+            const entry = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span class="text-slate-600">[${time}]</span> <span class="font-bold text-slate-200">&lt;${data.name}&gt;</span> ${data.text}`;
+            chatConsole.appendChild(entry);
+            chatConsole.scrollTop = chatConsole.scrollHeight;
+        });
+
+        socket.on('load-proxies', (proxies) => {
+            document.getElementById('proxyArea').value = proxies;
+        });
+
+        function clearSystemConsole() {
+            systemConsole.innerHTML = '<div class="text-slate-600">[SISTEMA] Logs limpiados correctamente.</div>';
+        }
+
+        function clearChatConsole() {
+            chatConsole.innerHTML = '<div class="text-slate-600">[CHAT] Consola de chat limpiada.</div>';
+        }
+
+        function startBots() {
+            socket.emit('start-bots', {
+                host: document.getElementById('host').value,
+                port: document.getElementById('port').value,
+                version: document.getElementById('version').value,
+                count: document.getElementById('count').value,
+                prefix: document.getElementById('prefix').value,
+                delay: document.getElementById('delay').value,
+                botPassword: document.getElementById('botPassword').value,
+                useProxies: document.getElementById('useProxies').checked,
+                autoCracked: document.getElementById('autoCracked').checked
+            });
+        }
+
+        function stopSpawning() { socket.emit('stop-spawning'); }
+        function stopBots() { socket.emit('stop-bots'); }
+
+        function sendGlobalMsg() {
+            const input = document.getElementById('globalMsg');
+            if (input.value.trim() !== '') {
+                socket.emit('global-chat', input.value.trim());
+                input.value = '';
+            }
+        }
+
+        function startSpam() {
+            const message = document.getElementById('spamMessageInput').value;
+            const spamDelay = document.getElementById('spamDelayInput').value;
+            socket.emit('start-spam', { message, spamDelay });
+        }
+
+        function stopSpam() { socket.emit('stop-spam'); }
+
+        function saveProxies() {
+            const content = document.getElementById('proxyArea').value;
+            socket.emit('save-proxies', content);
+        }
+
+        function sendAction(action) {
+            socket.emit('bot-action', { action });
+        }
+    </script>
+</body>
+</html>
