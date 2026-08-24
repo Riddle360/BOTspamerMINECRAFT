@@ -52,7 +52,7 @@ npm install
 npm start
 
 5. Abre tu navegador y accede a:
-http://localhost:3000
+http://localhost:4000
 
 ---
 
